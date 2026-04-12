@@ -11,96 +11,96 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('parroquias', function (Blueprint $table): void {
-            $table->foreign('arciprestazgo_id')
+        Schema::table('parishes', function (Blueprint $table): void {
+            $table->foreign('deanery_id')
                 ->references('id')
-                ->on('arciprestazgos')
+                ->on('deaneries')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
         });
 
-        Schema::table('comunidades', function (Blueprint $table): void {
-            $table->foreign('parroquia_id')
+        Schema::table('communities', function (Blueprint $table): void {
+            $table->foreign('parish_id')
                 ->references('id')
-                ->on('parroquias')
+                ->on('parishes')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
         });
 
-        Schema::table('sacerdotes', function (Blueprint $table): void {
-            $table->foreign('titulo_sacerdotal_id')
+        Schema::table('priests', function (Blueprint $table): void {
+            $table->foreign('priest_title_id')
                 ->references('id')
-                ->on('titulos_sacerdotales')
+                ->on('priest_titles')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
         });
 
-        Schema::table('arciprestazgos', function (Blueprint $table): void {
-            $table->foreign('arcipestre_id')
+        Schema::table('deaneries', function (Blueprint $table): void {
+            $table->foreign('archpriest_id')
                 ->references('id')
-                ->on('sacerdotes')
+                ->on('priests')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
         });
 
-        Schema::table('articulos', function (Blueprint $table): void {
-            $table->foreign('parroquia_id')
+        Schema::table('items', function (Blueprint $table): void {
+            $table->foreign('parish_id')
                 ->references('id')
-                ->on('parroquias')
+                ->on('parishes')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->foreign('comunidad_id')
+            $table->foreign('community_id')
                 ->references('id')
-                ->on('comunidades')
+                ->on('communities')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
         });
 
-        Schema::table('restauraciones', function (Blueprint $table): void {
-            $table->foreign('articulo_id')
+        Schema::table('restorations', function (Blueprint $table): void {
+            $table->foreign('item_id')
                 ->references('id')
-                ->on('articulos')
+                ->on('items')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
 
-        Schema::table('asignacion_parroquia_sacerdotes', function (Blueprint $table): void {
-            $table->foreign('parroquia_id')
+        Schema::table('parish_priest_assignments', function (Blueprint $table): void {
+            $table->foreign('parish_id')
                 ->references('id')
-                ->on('parroquias')
+                ->on('parishes')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->foreign('sacerdote_id')
+            $table->foreign('priest_id')
                 ->references('id')
-                ->on('sacerdotes')
+                ->on('priests')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->foreign('cargo_parroquial_id')
+            $table->foreign('parish_role_id')
                 ->references('id')
-                ->on('cargos_parroquiales')
+                ->on('parish_roles')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
         });
 
         Schema::table('users', function (Blueprint $table): void {
-            $table->foreign('arciprestazgo_id')
+            $table->foreign('deanery_id')
                 ->references('id')
-                ->on('arciprestazgos')
+                ->on('deaneries')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->foreign('parroquia_id')
+            $table->foreign('parish_id')
                 ->references('id')
-                ->on('parroquias')
+                ->on('parishes')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->foreign('comunidad_id')
+            $table->foreign('community_id')
                 ->references('id')
-                ->on('comunidades')
+                ->on('communities')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
         });
@@ -112,40 +112,40 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            $table->dropForeign(['arciprestazgo_id']);
-            $table->dropForeign(['parroquia_id']);
-            $table->dropForeign(['comunidad_id']);
+            $table->dropForeign(['deanery_id']);
+            $table->dropForeign(['parish_id']);
+            $table->dropForeign(['community_id']);
         });
 
-        Schema::table('asignacion_parroquia_sacerdotes', function (Blueprint $table): void {
-            $table->dropForeign(['parroquia_id']);
-            $table->dropForeign(['sacerdote_id']);
-            $table->dropForeign(['cargo_parroquial_id']);
+        Schema::table('parish_priest_assignments', function (Blueprint $table): void {
+            $table->dropForeign(['parish_id']);
+            $table->dropForeign(['priest_id']);
+            $table->dropForeign(['parish_role_id']);
         });
 
-        Schema::table('restauraciones', function (Blueprint $table): void {
-            $table->dropForeign(['articulo_id']);
+        Schema::table('restorations', function (Blueprint $table): void {
+            $table->dropForeign(['item_id']);
         });
 
-        Schema::table('articulos', function (Blueprint $table): void {
-            $table->dropForeign(['parroquia_id']);
-            $table->dropForeign(['comunidad_id']);
+        Schema::table('items', function (Blueprint $table): void {
+            $table->dropForeign(['parish_id']);
+            $table->dropForeign(['community_id']);
         });
 
-        Schema::table('arciprestazgos', function (Blueprint $table): void {
-            $table->dropForeign(['arcipestre_id']);
+        Schema::table('deaneries', function (Blueprint $table): void {
+            $table->dropForeign(['archpriest_id']);
         });
 
-        Schema::table('sacerdotes', function (Blueprint $table): void {
-            $table->dropForeign(['titulo_sacerdotal_id']);
+        Schema::table('priests', function (Blueprint $table): void {
+            $table->dropForeign(['priest_title_id']);
         });
 
-        Schema::table('comunidades', function (Blueprint $table): void {
-            $table->dropForeign(['parroquia_id']);
+        Schema::table('communities', function (Blueprint $table): void {
+            $table->dropForeign(['parish_id']);
         });
 
-        Schema::table('parroquias', function (Blueprint $table): void {
-            $table->dropForeign(['arciprestazgo_id']);
+        Schema::table('parishes', function (Blueprint $table): void {
+            $table->dropForeign(['deanery_id']);
         });
     }
 };

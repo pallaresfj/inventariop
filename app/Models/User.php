@@ -22,15 +22,16 @@ use Spatie\Permission\Traits\HasRoles;
     'force_password_reset',
     'legacy_password_md5',
     'picture_path',
-    'arciprestazgo_id',
-    'parroquia_id',
-    'comunidad_id',
+    'deanery_id',
+    'parish_id',
+    'community_id',
 ])]
 #[Hidden(['password', 'remember_token', 'legacy_password_md5'])]
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasRoles;
     use Notifiable;
 
@@ -48,39 +49,39 @@ class User extends Authenticatable implements FilamentUser
         return $this->is_active;
     }
 
-    public function arciprestazgo(): BelongsTo
+    public function deanery(): BelongsTo
     {
-        return $this->belongsTo(Arciprestazgo::class);
+        return $this->belongsTo(Deanery::class);
     }
 
-    public function parroquia(): BelongsTo
+    public function parish(): BelongsTo
     {
-        return $this->belongsTo(Parroquia::class);
+        return $this->belongsTo(Parish::class);
     }
 
-    public function comunidad(): BelongsTo
+    public function community(): BelongsTo
     {
-        return $this->belongsTo(Comunidad::class);
+        return $this->belongsTo(Community::class);
     }
 
-    public function isSoporteTecnico(): bool
+    public function isTechnicalSupport(): bool
     {
-        return $this->hasRole('soporte_tecnico');
+        return $this->hasRole('technical_support');
     }
 
-    public function isGestorDiocesis(): bool
+    public function isDioceseManager(): bool
     {
-        return $this->hasRole('gestor_diocesis');
+        return $this->hasRole('diocese_manager');
     }
 
-    public function isGestorParroquia(): bool
+    public function isParishManager(): bool
     {
-        return $this->hasRole('gestor_parroquia');
+        return $this->hasRole('parish_manager');
     }
 
-    public function isGestorComunidad(): bool
+    public function isCommunityManager(): bool
     {
-        return $this->hasRole('gestor_comunidad');
+        return $this->hasRole('community_manager');
     }
 
     /**

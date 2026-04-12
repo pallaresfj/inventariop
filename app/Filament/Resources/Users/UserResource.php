@@ -9,13 +9,13 @@ use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Tables\UsersTable;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class UserResource extends Resource
 {
@@ -23,11 +23,11 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Seguridad';
+    protected static string|UnitEnum|null $navigationGroup = 'Security';
 
-    protected static ?string $modelLabel = 'Usuario';
+    protected static ?string $modelLabel = 'User';
 
-    protected static ?string $pluralModelLabel = 'Usuarios';
+    protected static ?string $pluralModelLabel = 'Users';
 
     public static function form(Schema $schema): Schema
     {
@@ -53,7 +53,7 @@ class UserResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->isSoporteTecnico()) {
+        if ($user->isTechnicalSupport()) {
             return $query;
         }
 

@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -30,10 +30,10 @@ class UsersTable
                     ->separator(', ')
                     ->label('Roles'),
                 IconColumn::make('is_active')
-                    ->label('Activo')
+                    ->label('Active')
                     ->boolean(),
                 IconColumn::make('force_password_reset')
-                    ->label('Reset obligado')
+                    ->label('Forced reset')
                     ->boolean(),
             ])
             ->filters([

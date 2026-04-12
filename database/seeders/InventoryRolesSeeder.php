@@ -23,10 +23,10 @@ class InventoryRolesSeeder extends Seeder
         }
 
         $roleNames = [
-            'soporte_tecnico',
-            'gestor_diocesis',
-            'gestor_parroquia',
-            'gestor_comunidad',
+            'technical_support',
+            'diocese_manager',
+            'parish_manager',
+            'community_manager',
         ];
 
         foreach ($roleNames as $roleName) {
@@ -36,19 +36,19 @@ class InventoryRolesSeeder extends Seeder
         $this->syncRolePermissions();
 
         $supportUser = User::updateOrCreate(
-            ['username' => 'soporte'],
+            ['username' => 'support'],
             [
-                'name' => 'Soporte Técnico',
-                'email' => 'soporte@inventariop.local',
-                'password' => Hash::make('Cambiar123!'),
+                'name' => 'Technical Support',
+                'email' => 'support@inventariop.local',
+                'password' => Hash::make('ChangeMe123!'),
                 'is_active' => true,
                 'force_password_reset' => true,
                 'legacy_password_md5' => null,
             ]
         );
 
-        if (! $supportUser->hasRole('soporte_tecnico')) {
-            $supportUser->assignRole('soporte_tecnico');
+        if (! $supportUser->hasRole('technical_support')) {
+            $supportUser->assignRole('technical_support');
         }
     }
 
@@ -56,56 +56,56 @@ class InventoryRolesSeeder extends Seeder
     {
         $allPermissions = Permission::query()->pluck('name');
 
-        $supportRole = Role::findByName('soporte_tecnico', 'web');
+        $supportRole = Role::findByName('technical_support', 'web');
         $supportRole->syncPermissions($allPermissions);
 
-        $gestorDiocesis = Role::findByName('gestor_diocesis', 'web');
-        $gestorDiocesis->syncPermissions(
+        $dioceseManagerRole = Role::findByName('diocese_manager', 'web');
+        $dioceseManagerRole->syncPermissions(
             $this->permissionsFor(
                 [
-                    'Arciprestazgo',
-                    'Parroquia',
-                    'Comunidad',
-                    'Articulo',
-                    'Restauracion',
-                    'Sacerdote',
-                    'AsignacionParroquiaSacerdote',
-                    'TituloSacerdotal',
-                    'CargoParroquial',
+                    'Deanery',
+                    'Parish',
+                    'Community',
+                    'Item',
+                    'Restoration',
+                    'Priest',
+                    'ParishPriestAssignment',
+                    'PriestTitle',
+                    'ParishRole',
                     'User',
                 ],
                 ['ViewAny', 'View', 'Create', 'Update', 'Delete', 'DeleteAny']
             )
         );
 
-        $gestorParroquia = Role::findByName('gestor_parroquia', 'web');
-        $gestorParroquia->syncPermissions(
+        $parishManagerRole = Role::findByName('parish_manager', 'web');
+        $parishManagerRole->syncPermissions(
             $this->permissionsFor(
-                ['Articulo', 'Restauracion', 'Sacerdote', 'AsignacionParroquiaSacerdote'],
+                ['Item', 'Restoration', 'Priest', 'ParishPriestAssignment'],
                 ['ViewAny', 'View', 'Create', 'Update', 'Delete', 'DeleteAny']
             )
                 ->merge($this->permissionsFor(
-                    ['Arciprestazgo', 'Parroquia', 'Comunidad', 'TituloSacerdotal', 'CargoParroquial'],
+                    ['Deanery', 'Parish', 'Community', 'PriestTitle', 'ParishRole'],
                     ['ViewAny', 'View']
                 ))
                 ->merge($this->permissionsFor(['User'], ['ViewAny', 'View', 'Update']))
         );
 
-        $gestorComunidad = Role::findByName('gestor_comunidad', 'web');
-        $gestorComunidad->syncPermissions(
+        $communityManagerRole = Role::findByName('community_manager', 'web');
+        $communityManagerRole->syncPermissions(
             $this->permissionsFor(
-                ['Articulo', 'Restauracion'],
+                ['Item', 'Restoration'],
                 ['ViewAny', 'View', 'Create', 'Update', 'Delete', 'DeleteAny']
             )
                 ->merge($this->permissionsFor(
                     [
-                        'Arciprestazgo',
-                        'Parroquia',
-                        'Comunidad',
-                        'Sacerdote',
-                        'AsignacionParroquiaSacerdote',
-                        'TituloSacerdotal',
-                        'CargoParroquial',
+                        'Deanery',
+                        'Parish',
+                        'Community',
+                        'Priest',
+                        'ParishPriestAssignment',
+                        'PriestTitle',
+                        'ParishRole',
                     ],
                     ['ViewAny', 'View']
                 ))

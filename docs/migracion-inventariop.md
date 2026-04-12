@@ -1,45 +1,45 @@
-# Migración Inventario Parroquial (Laravel 13 + Filament 5 + Livewire 4 + Shield)
+# Inventory Parish Migration (Laravel 13 + Filament 5 + Livewire 4 + Shield)
 
-## Estructura legado requerida
+## Required Legacy Artifact
 
 - `legacy/sql/asyservi_sc_inventariop.sql`
 
-Si falta el SQL, los comandos de importación se detienen y reportan faltantes.
+If the SQL file is missing, import commands stop and report the missing artifact.
 
-## Flujo recomendado
+## Recommended Workflow
 
-1. Preparar base de datos MySQL/MariaDB en `.env`.
-2. Ejecutar migraciones y seed inicial:
+1. Configure MySQL/MariaDB credentials in `.env`.
+2. Run schema and base seeders:
    - `php artisan migrate:fresh --seed`
-3. Importar datos legado:
-   - `php artisan inventario:import legacy/sql/asyservi_sc_inventariop.sql`
-4. Migrar imágenes BLOB a `storage`:
-   - `php artisan inventario:import-media legacy/sql/asyservi_sc_inventariop.sql`
-5. Conciliar conteos:
-   - `php artisan inventario:reconcile legacy/sql/asyservi_sc_inventariop.sql --strict`
-6. Crear o renovar credenciales de soporte:
-   - `php artisan inventario:bootstrap-admin soporte soporte@inventariop.local Cambiar123!`
+3. Import legacy core data:
+   - `php artisan inventory:import legacy/sql/asyservi_sc_inventariop.sql`
+4. Migrate image BLOBs to `storage`:
+   - `php artisan inventory:import-media legacy/sql/asyservi_sc_inventariop.sql`
+5. Reconcile table counts:
+   - `php artisan inventory:reconcile legacy/sql/asyservi_sc_inventariop.sql --strict`
+6. Create or refresh support credentials:
+   - `php artisan inventory:bootstrap-admin support support@inventariop.local ChangeMe123!`
 
-## Seguridad de credenciales migradas
+## Migrated Credential Security
 
-- Usuarios legado se importan con contraseña aleatoria nueva.
-- Se conserva hash MD5 legado solo como referencia temporal (`legacy_password_md5`).
-- `force_password_reset=true` bloquea navegación del panel hasta actualizar contraseña en perfil.
-- Para forzar reset adicional:
-  - Todos: `php artisan inventario:force-password-reset --all`
-  - Usuario puntual: `php artisan inventario:force-password-reset <id|username|email>`
+- Legacy users are imported with a new random password.
+- Legacy MD5 hash is kept only as temporary reference (`legacy_password_md5`).
+- `force_password_reset=true` blocks panel navigation until password is updated.
+- To force extra resets:
+  - All users: `php artisan inventory:force-password-reset --all`
+  - Single user: `php artisan inventory:force-password-reset <id|username|email>`
 
-## Roles iniciales
+## Initial Roles
 
-- `soporte_tecnico`
-- `gestor_diocesis`
-- `gestor_parroquia`
-- `gestor_comunidad`
+- `technical_support`
+- `diocese_manager`
+- `parish_manager`
+- `community_manager`
 
-Se crean en `InventoryRolesSeeder` y se sincronizan permisos Shield.
+Roles are created in `InventoryRolesSeeder` and synchronized with Shield permissions.
 
-## Notas
+## Notes
 
-- El login del panel acepta `username` o correo.
-- El filtrado por contexto (diocesis/parroquia/comunidad) se aplica en queries de recursos Filament.
-- Imágenes migradas quedan en `storage/app/public/inventario-legacy/...`.
+- Panel login supports `username` or `email`.
+- Context scoping (deanery/parish/community) is applied in Filament resource queries.
+- Migrated images are stored under `storage/app/public/inventory-legacy/...`.

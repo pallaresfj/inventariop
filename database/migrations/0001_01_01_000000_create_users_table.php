@@ -22,9 +22,9 @@ return new class extends Migration
             $table->boolean('force_password_reset')->default(false)->index();
             $table->char('legacy_password_md5', 32)->nullable();
             $table->string('picture_path')->nullable();
-            $table->unsignedBigInteger('arciprestazgo_id')->nullable()->index();
-            $table->unsignedBigInteger('parroquia_id')->nullable()->index();
-            $table->unsignedBigInteger('comunidad_id')->nullable()->index();
+            $table->unsignedBigInteger('deanery_id')->nullable()->index();
+            $table->unsignedBigInteger('parish_id')->nullable()->index();
+            $table->unsignedBigInteger('community_id')->nullable()->index();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -26,7 +26,7 @@ class ForcePasswordReset
             return $next($request);
         }
 
-        if ($request->routeIs('filament.admin.auth.profile')) {
+        if ($request->routeIs('filament.admin.auth.profile*')) {
             return $next($request);
         }
 
@@ -39,7 +39,7 @@ class ForcePasswordReset
         }
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'Debe actualizar la contraseña antes de continuar.'], 423);
+            return response()->json(['message' => 'You must update your password before continuing.'], 423);
         }
 
         return redirect()->route('filament.admin.auth.profile');

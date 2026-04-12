@@ -36,28 +36,28 @@ class UserForm
                     ->multiple()
                     ->preload()
                     ->searchable(),
-                Select::make('arciprestazgo_id')
-                    ->relationship('arciprestazgo', 'nombre')
+                Select::make('deanery_id')
+                    ->relationship('deanery', 'name')
                     ->searchable()
                     ->preload(),
-                Select::make('parroquia_id')
-                    ->relationship('parroquia', 'nombre')
+                Select::make('parish_id')
+                    ->relationship('parish', 'name')
                     ->searchable()
                     ->preload(),
-                Select::make('comunidad_id')
-                    ->relationship('comunidad', 'nombre')
+                Select::make('community_id')
+                    ->relationship('community', 'name')
                     ->searchable()
                     ->preload(),
                 Toggle::make('is_active')
-                    ->label('Usuario activo')
+                    ->label('Active user')
                     ->default(true),
                 Toggle::make('force_password_reset')
-                    ->label('Forzar cambio de contraseña')
+                    ->label('Force password reset')
                     ->default(false),
                 FileUpload::make('picture_path')
-                    ->label('Foto')
+                    ->label('Photo')
                     ->disk('public')
-                    ->directory('inventario/users')
+                    ->directory('inventory/users')
                     ->image(),
             ]);
     }
