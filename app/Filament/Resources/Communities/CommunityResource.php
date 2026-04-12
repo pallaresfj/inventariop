@@ -10,13 +10,13 @@ use App\Filament\Resources\Communities\Tables\CommunitiesTable;
 use App\Models\Community;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class CommunityResource extends Resource
 {
@@ -24,11 +24,15 @@ class CommunityResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Community';
+    protected static ?string $navigationLabel = 'Comunidades';
 
-    protected static ?string $pluralModelLabel = 'Communities';
+    protected static ?string $modelLabel = 'Comunidad';
+
+    protected static ?string $pluralModelLabel = 'Comunidades';
+
+    protected static ?int $navigationSort = 30;
 
     public static function form(Schema $schema): Schema
     {

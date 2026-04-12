@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Deaneries\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -16,14 +16,17 @@ class DeaneriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nombre')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label('Correo')
                     ->searchable(),
                 TextColumn::make('archpriest.name')
-                    ->label('Archpriest')
+                    ->label('Arcipreste')
                     ->searchable(),
                 TextColumn::make('updated_at')
+                    ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')
                     ->sortable(),
             ])

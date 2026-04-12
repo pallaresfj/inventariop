@@ -5,18 +5,19 @@ namespace App\Filament\Resources\Items;
 use App\Filament\Resources\Items\Pages\CreateItem;
 use App\Filament\Resources\Items\Pages\EditItem;
 use App\Filament\Resources\Items\Pages\ListItems;
+use App\Filament\Resources\Items\RelationManagers\RestorationsRelationManager;
 use App\Filament\Resources\Items\Schemas\ItemForm;
 use App\Filament\Resources\Items\Tables\ItemsTable;
 use App\Models\Item;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class ItemResource extends Resource
 {
@@ -24,11 +25,15 @@ class ItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Item';
+    protected static ?string $navigationLabel = 'Articulos';
 
-    protected static ?string $pluralModelLabel = 'Items';
+    protected static ?string $modelLabel = 'Articulo';
+
+    protected static ?string $pluralModelLabel = 'Articulos';
+
+    protected static ?int $navigationSort = 40;
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +47,9 @@ class ItemResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RestorationsRelationManager::class,
+        ];
     }
 
     public static function getEloquentQuery(): Builder

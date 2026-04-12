@@ -10,13 +10,13 @@ use App\Filament\Resources\Priests\Tables\PriestsTable;
 use App\Models\Priest;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class PriestResource extends Resource
 {
@@ -24,11 +24,15 @@ class PriestResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Priest';
+    protected static ?string $navigationLabel = 'Sacerdotes';
 
-    protected static ?string $pluralModelLabel = 'Priests';
+    protected static ?string $modelLabel = 'Sacerdote';
+
+    protected static ?string $pluralModelLabel = 'Sacerdotes';
+
+    protected static ?int $navigationSort = 60;
 
     public static function form(Schema $schema): Schema
     {

@@ -10,13 +10,13 @@ use App\Filament\Resources\ParishPriestAssignments\Tables\ParishPriestAssignment
 use App\Models\ParishPriestAssignment;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class ParishPriestAssignmentResource extends Resource
 {
@@ -24,11 +24,15 @@ class ParishPriestAssignmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Parish Priest Assignment';
+    protected static ?string $navigationLabel = 'Asignaciones parroquiales';
 
-    protected static ?string $pluralModelLabel = 'Parish Priest Assignments';
+    protected static ?string $modelLabel = 'Asignacion parroquial';
+
+    protected static ?string $pluralModelLabel = 'Asignaciones parroquiales';
+
+    protected static ?int $navigationSort = 70;
 
     public static function form(Schema $schema): Schema
     {

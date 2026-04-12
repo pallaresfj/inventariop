@@ -9,11 +9,11 @@ use App\Filament\Resources\ParishRoles\Schemas\ParishRoleForm;
 use App\Filament\Resources\ParishRoles\Tables\ParishRolesTable;
 use App\Models\ParishRole;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ParishRoleResource extends Resource
 {
@@ -21,11 +21,15 @@ class ParishRoleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Configuration';
+    protected static string|UnitEnum|null $navigationGroup = 'Configuracion';
 
-    protected static ?string $modelLabel = 'Parish Role';
+    protected static ?string $navigationLabel = 'Cargos parroquiales';
 
-    protected static ?string $pluralModelLabel = 'Parish Roles';
+    protected static ?string $modelLabel = 'Cargo parroquial';
+
+    protected static ?string $pluralModelLabel = 'Cargos parroquiales';
+
+    protected static ?int $navigationSort = 20;
 
     public static function form(Schema $schema): Schema
     {

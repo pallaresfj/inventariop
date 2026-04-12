@@ -12,6 +12,7 @@ class ParishRoleForm
         return $schema
             ->components([
                 TextInput::make('description')
+                    ->label('Descripcion')
                     ->required()
                     ->maxLength(80),
             ]);

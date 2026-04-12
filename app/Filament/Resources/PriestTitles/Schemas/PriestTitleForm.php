@@ -12,9 +12,11 @@ class PriestTitleForm
         return $schema
             ->components([
                 TextInput::make('title')
+                    ->label('Titulo')
                     ->required()
                     ->maxLength(60),
                 TextInput::make('description')
+                    ->label('Descripcion')
                     ->maxLength(255),
             ]);
     }

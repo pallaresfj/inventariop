@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Communities\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -17,20 +17,25 @@ class CommunitiesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nombre')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('parish.name')
+                    ->label('Parroquia')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('legacy_login')
-                    ->label('Legacy login')
+                    ->label('Acceso legado')
                     ->searchable(),
                 TextColumn::make('email')
+                    ->label('Correo')
                     ->searchable(),
-                TextColumn::make('phone'),
+                TextColumn::make('phone')
+                    ->label('Telefono'),
             ])
             ->filters([
                 SelectFilter::make('parish')
+                    ->label('Parroquia')
                     ->relationship('parish', 'name'),
             ])
             ->recordActions([

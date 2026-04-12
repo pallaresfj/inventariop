@@ -18,27 +18,33 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('username')
+                    ->label('Usuario')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nombre')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label('Correo')
                     ->searchable(),
                 TextColumn::make('roles.name')
                     ->badge()
                     ->separator(', ')
+                    ->formatStateUsing(fn (string $state): string => self::translateRole($state))
                     ->label('Roles'),
                 IconColumn::make('is_active')
-                    ->label('Active')
+                    ->label('Activo')
                     ->boolean(),
                 IconColumn::make('force_password_reset')
-                    ->label('Forced reset')
+                    ->label('Cambio forzado')
                     ->boolean(),
             ])
             ->filters([
                 SelectFilter::make('roles')
+                    ->label('Roles')
                     ->relationship('roles', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record): string => self::translateRole($record->name))
                     ->multiple(),
             ])
             ->recordActions([
@@ -50,5 +56,16 @@ class UsersTable
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    private static function translateRole(string $roleName): string
+    {
+        return match ($roleName) {
+            'technical_support' => 'Soporte tecnico',
+            'diocese_manager' => 'Gestor diocesano',
+            'parish_manager' => 'Gestor parroquial',
+            'community_manager' => 'Gestor comunitario',
+            default => $roleName,
+        };
     }
 }

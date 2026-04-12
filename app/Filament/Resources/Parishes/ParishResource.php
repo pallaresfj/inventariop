@@ -10,13 +10,13 @@ use App\Filament\Resources\Parishes\Tables\ParishesTable;
 use App\Models\Parish;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class ParishResource extends Resource
 {
@@ -24,11 +24,15 @@ class ParishResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Parish';
+    protected static ?string $navigationLabel = 'Parroquias';
 
-    protected static ?string $pluralModelLabel = 'Parishes';
+    protected static ?string $modelLabel = 'Parroquia';
+
+    protected static ?string $pluralModelLabel = 'Parroquias';
+
+    protected static ?int $navigationSort = 20;
 
     public static function form(Schema $schema): Schema
     {

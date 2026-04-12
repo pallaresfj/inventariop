@@ -15,17 +15,20 @@ class RestorationForm
         return $schema
             ->components([
                 Select::make('item_id')
+                    ->label('Articulo')
                     ->relationship('item', 'name')
                     ->required()
                     ->searchable()
                     ->preload(),
                 DatePicker::make('restored_at')
+                    ->label('Fecha de restauracion')
                     ->required(),
                 TextInput::make('restoration_cost')
+                    ->label('Costo de restauracion')
                     ->numeric()
                     ->minValue(0),
                 FileUpload::make('image_path')
-                    ->label('Image')
+                    ->label('Imagen')
                     ->disk('public')
                     ->directory('inventory/restorations')
                     ->image()

@@ -23,11 +23,15 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Security';
+    protected static string|UnitEnum|null $navigationGroup = 'Seguridad';
 
-    protected static ?string $modelLabel = 'User';
+    protected static ?string $navigationLabel = 'Usuarios';
 
-    protected static ?string $pluralModelLabel = 'Users';
+    protected static ?string $modelLabel = 'Usuario';
+
+    protected static ?string $pluralModelLabel = 'Usuarios';
+
+    protected static ?int $navigationSort = 10;
 
     public static function form(Schema $schema): Schema
     {

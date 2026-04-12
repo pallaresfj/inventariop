@@ -10,13 +10,13 @@ use App\Filament\Resources\Deaneries\Tables\DeaneriesTable;
 use App\Models\Deanery;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class DeaneryResource extends Resource
 {
@@ -24,11 +24,15 @@ class DeaneryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Deanery';
+    protected static ?string $navigationLabel = 'Arciprestazgos';
 
-    protected static ?string $pluralModelLabel = 'Deaneries';
+    protected static ?string $modelLabel = 'Arciprestazgo';
+
+    protected static ?string $pluralModelLabel = 'Arciprestazgos';
+
+    protected static ?int $navigationSort = 10;
 
     public static function form(Schema $schema): Schema
     {

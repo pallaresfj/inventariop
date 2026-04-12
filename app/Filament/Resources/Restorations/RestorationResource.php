@@ -10,25 +10,31 @@ use App\Filament\Resources\Restorations\Tables\RestorationsTable;
 use App\Models\Restoration;
 use App\Models\User;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class RestorationResource extends Resource
 {
     protected static ?string $model = Restoration::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 
-    protected static ?string $modelLabel = 'Restoration';
+    protected static ?string $navigationLabel = 'Restauraciones';
 
-    protected static ?string $pluralModelLabel = 'Restorations';
+    protected static ?string $modelLabel = 'Restauracion';
+
+    protected static ?string $pluralModelLabel = 'Restauraciones';
+
+    protected static ?int $navigationSort = 50;
 
     public static function form(Schema $schema): Schema
     {
