@@ -2,7 +2,9 @@ FROM php:8.3-fpm-alpine AS php_base
 
 WORKDIR /var/www/html
 
-RUN apk add --no-cache bash curl icu-libs libzip \
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+RUN apk add --no-cache bash curl git unzip icu-libs libzip oniguruma \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev linux-headers \
     && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring bcmath intl zip exif pcntl opcache \
     && apk del .build-deps
