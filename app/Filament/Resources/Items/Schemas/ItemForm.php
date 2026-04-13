@@ -2,15 +2,19 @@
 
 namespace App\Filament\Resources\Items\Schemas;
 
+use App\Filament\Resources\Items\Support\ItemScope;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class ItemForm
 {
@@ -32,12 +36,31 @@ class ItemForm
                                     ->label('Parroquia')
                                     ->relationship('parish', 'name')
                                     ->required()
+                                    ->live()
+                                    ->default(fn (): ?int => ItemScope::resolveScopedParishId())
+                                    ->disabled(fn (): bool => ItemScope::shouldLockParish())
+                                    ->dehydrated()
+                                    ->afterStateUpdated(function (Set $set, mixed $state, mixed $old): void {
+                                        if (ItemScope::shouldResetCommunity($state, $old)) {
+                                            $set('community_id', null);
+                                        }
+                                    })
                                     ->searchable()
                                     ->preload(),
                                 Select::make('community_id')
                                     ->label('Comunidad')
-                                    ->relationship('community', 'name')
+                                    ->relationship(
+                                        'community',
+                                        'name',
+                                        fn (Builder $query, Get $get): Builder => ItemScope::scopeCommunityOptionsQuery(
+                                            $query,
+                                            ItemScope::resolveSelectedParishId($get('parish_id'))
+                                        ),
+                                    )
                                     ->required()
+                                    ->default(fn (): ?int => ItemScope::resolveScopedCommunityId())
+                                    ->disabled(fn (): bool => ItemScope::shouldLockCommunity())
+                                    ->dehydrated()
                                     ->searchable()
                                     ->preload(),
                                 Select::make('condition')
@@ -63,9 +86,8 @@ class ItemForm
                                     ->required(),
                                 DatePicker::make('acquired_at')
                                     ->label('Fecha de adquisicion'),
-                                Textarea::make('description')
+                                RichEditor::make('description')
                                     ->label('Descripcion')
-                                    ->rows(4)
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),

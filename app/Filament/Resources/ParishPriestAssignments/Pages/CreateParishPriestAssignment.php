@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\ParishPriestAssignments\Pages;
 
+use App\Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ParishPriestAssignments\ParishPriestAssignmentResource;
-use Filament\Resources\Pages\CreateRecord;
 
 class CreateParishPriestAssignment extends CreateRecord
 {

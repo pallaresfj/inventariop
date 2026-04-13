@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\ParishPriestAssignments\Pages;
 
+use App\Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\ParishPriestAssignments\ParishPriestAssignmentResource;
 use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\EditRecord;
 
 class EditParishPriestAssignment extends EditRecord
 {

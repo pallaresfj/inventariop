@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Parishes;
 use App\Filament\Resources\Parishes\Pages\CreateParish;
 use App\Filament\Resources\Parishes\Pages\EditParish;
 use App\Filament\Resources\Parishes\Pages\ListParishes;
+use App\Filament\Resources\Parishes\RelationManagers\CommunitiesRelationManager;
 use App\Filament\Resources\Parishes\Schemas\ParishForm;
 use App\Filament\Resources\Parishes\Tables\ParishesTable;
 use App\Models\Parish;
@@ -46,7 +47,9 @@ class ParishResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            CommunitiesRelationManager::class,
+        ];
     }
 
     public static function getEloquentQuery(): Builder

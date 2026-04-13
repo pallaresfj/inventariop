@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Communities;
 use App\Filament\Resources\Communities\Pages\CreateCommunity;
 use App\Filament\Resources\Communities\Pages\EditCommunity;
 use App\Filament\Resources\Communities\Pages\ListCommunities;
+use App\Filament\Resources\Communities\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Communities\Schemas\CommunityForm;
 use App\Filament\Resources\Communities\Tables\CommunitiesTable;
 use App\Models\Community;
@@ -46,7 +47,9 @@ class CommunityResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            ItemsRelationManager::class,
+        ];
     }
 
     public static function getEloquentQuery(): Builder

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Priests\Pages;
 
+use App\Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\Priests\PriestResource;
 use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\EditRecord;
 
 class EditPriest extends EditRecord
 {

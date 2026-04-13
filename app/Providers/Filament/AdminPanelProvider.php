@@ -10,6 +10,9 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ReplicateAction;
+use Filament\Actions\ViewAction;
+use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,7 +21,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
-use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -37,6 +39,8 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->passwordReset()
             ->profile(EditProfile::class)
+            ->userMenu(position: UserMenuPosition::Sidebar)
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => '#2E4A7D',
                 'success' => '#2E7D32',
@@ -49,19 +53,26 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 InventoryOverview::class,
-                AccountWidget::class,
             ])
             ->bootUsing(function (): void {
                 Action::configureUsing(function (Action $action): void {
-                    if (! ($action instanceof EditAction || $action instanceof DeleteAction)) {
+                    if (! ($action instanceof EditAction || $action instanceof DeleteAction || $action instanceof ViewAction || $action instanceof ReplicateAction)) {
                         return;
                     }
+
+                    $tooltip = match (true) {
+                        $action instanceof EditAction => 'Editar',
+                        $action instanceof DeleteAction => 'Eliminar',
+                        $action instanceof ViewAction => 'Ver',
+                        $action instanceof ReplicateAction => 'Duplicar',
+                        default => null,
+                    };
 
                     $action
                         ->iconButton()
                         ->size(Size::Large)
                         ->iconSize(IconSize::Large)
-                        ->tooltip($action instanceof EditAction ? 'Editar' : 'Eliminar');
+                        ->tooltip($tooltip);
                 });
             })
             ->middleware([

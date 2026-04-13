@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\Communities\Pages;
 
 use App\Filament\Resources\Communities\CommunityResource;
+use App\Filament\Resources\Communities\Support\CommunityScope;
+use App\Filament\Resources\Pages\EditRecord;
 use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\EditRecord;
 
 class EditCommunity extends EditRecord
 {
@@ -15,5 +16,14 @@ class EditCommunity extends EditRecord
         return [
             DeleteAction::make(),
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return CommunityScope::applyScopedValues($data);
     }
 }

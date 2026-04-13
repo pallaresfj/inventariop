@@ -1,5 +1,11 @@
 <?php
 
+use App\Filament\Resources\Communities\CommunityResource;
+use App\Filament\Resources\Communities\RelationManagers\ItemsRelationManager;
+use App\Filament\Resources\Deaneries\DeaneryResource;
+use App\Filament\Resources\Deaneries\RelationManagers\ParishesRelationManager;
+use App\Filament\Resources\Parishes\ParishResource;
+use App\Filament\Resources\Parishes\RelationManagers\CommunitiesRelationManager;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +38,10 @@ it('uses english admin resource slugs', function (): void {
 
 it('returns 404 for direct restorations url', function (): void {
     $this->get('/admin/restorations')->assertNotFound();
+});
+
+it('registers hierarchy relation managers for inventory resources', function (): void {
+    expect(DeaneryResource::getRelations())->toContain(ParishesRelationManager::class)
+        ->and(ParishResource::getRelations())->toContain(CommunitiesRelationManager::class)
+        ->and(CommunityResource::getRelations())->toContain(ItemsRelationManager::class);
 });

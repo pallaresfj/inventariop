@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ReplicateAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -39,6 +40,7 @@ class CommunitiesTable
                     ->relationship('parish', 'name'),
             ])
             ->recordActions([
+                ReplicateAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

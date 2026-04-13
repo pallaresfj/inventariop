@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Deaneries;
 use App\Filament\Resources\Deaneries\Pages\CreateDeanery;
 use App\Filament\Resources\Deaneries\Pages\EditDeanery;
 use App\Filament\Resources\Deaneries\Pages\ListDeaneries;
+use App\Filament\Resources\Deaneries\RelationManagers\ParishesRelationManager;
 use App\Filament\Resources\Deaneries\Schemas\DeaneryForm;
 use App\Filament\Resources\Deaneries\Tables\DeaneriesTable;
 use App\Models\Deanery;
@@ -46,7 +47,9 @@ class DeaneryResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            ParishesRelationManager::class,
+        ];
     }
 
     public static function getEloquentQuery(): Builder

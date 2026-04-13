@@ -7,6 +7,8 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ReplicateAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -69,6 +71,8 @@ class RestorationsRelationManager extends RelationManager
                     ->label('Agregar restauracion'),
             ])
             ->recordActions([
+                ViewAction::make(),
+                ReplicateAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
