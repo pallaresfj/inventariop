@@ -8,6 +8,7 @@ use App\Filament\Widgets\InventoryOverview;
 use App\Http\Middleware\ForcePasswordReset;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
@@ -21,6 +22,8 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -54,25 +57,31 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 InventoryOverview::class,
             ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): View => view('filament.admin.mobile-actions'),
+            )
             ->bootUsing(function (): void {
                 Action::configureUsing(function (Action $action): void {
-                    if (! ($action instanceof EditAction || $action instanceof DeleteAction || $action instanceof ViewAction || $action instanceof ReplicateAction)) {
-                        return;
+                    if ($action instanceof EditAction || $action instanceof DeleteAction || $action instanceof ViewAction || $action instanceof ReplicateAction) {
+                        $tooltip = match (true) {
+                            $action instanceof EditAction => 'Editar',
+                            $action instanceof DeleteAction => 'Eliminar',
+                            $action instanceof ViewAction => 'Ver',
+                            $action instanceof ReplicateAction => 'Duplicar',
+                            default => null,
+                        };
+
+                        $action
+                            ->iconButton()
+                            ->size(Size::Large)
+                            ->iconSize(IconSize::Large)
+                            ->tooltip($tooltip);
                     }
 
-                    $tooltip = match (true) {
-                        $action instanceof EditAction => 'Editar',
-                        $action instanceof DeleteAction => 'Eliminar',
-                        $action instanceof ViewAction => 'Ver',
-                        $action instanceof ReplicateAction => 'Duplicar',
-                        default => null,
-                    };
-
-                    $action
-                        ->iconButton()
-                        ->size(Size::Large)
-                        ->iconSize(IconSize::Large)
-                        ->tooltip($tooltip);
+                    if ($action instanceof CreateAction || in_array($action->getName(), ['save', 'cancel'], true)) {
+                        $action->extraAttributes(['class' => 'fi-mobile-wide-action'], merge: true);
+                    }
                 });
             })
             ->middleware([

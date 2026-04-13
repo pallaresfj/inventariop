@@ -14,7 +14,11 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Table;
 
 class RestorationsRelationManager extends RelationManager
@@ -52,19 +56,42 @@ class RestorationsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('restored_at')
+            ->defaultPaginationPageOption(10)
+            ->searchDebounce('750ms')
+            ->deferFilters()
+            ->filtersFormColumns(['md' => 2])
+            ->filtersLayout(FiltersLayout::Modal)
+            ->persistFiltersInSession()
+            ->recordActionsPosition(RecordActionsPosition::AfterContent)
             ->columns([
+                Panel::make([
+                    Stack::make([
+                        TextColumn::make('restored_at')
+                            ->label('Fecha de restauracion')
+                            ->date('Y-m-d'),
+                        TextColumn::make('restoration_cost')
+                            ->label('Costo de restauracion')
+                            ->money('COP', locale: 'es_CO'),
+                        TextColumn::make('updated_at')
+                            ->label('Actualizado')
+                            ->dateTime('Y-m-d H:i'),
+                    ])->space(1),
+                ])->hiddenFrom('md'),
                 TextColumn::make('restored_at')
                     ->label('Fecha de restauracion')
                     ->date('Y-m-d')
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
                 TextColumn::make('restoration_cost')
                     ->label('Costo de restauracion')
                     ->money('COP', locale: 'es_CO')
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
             ])
             ->headerActions([
                 CreateAction::make()
