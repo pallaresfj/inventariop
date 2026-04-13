@@ -20,6 +20,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['item_id', 'restored_at'], 'restorations_item_restored_at_index');
+
+            $table->foreign('item_id')
+                ->references('id')
+                ->on('items')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 

@@ -23,6 +23,24 @@ return new class extends Migration
                 ['parish_id', 'priest_id', 'parish_role_id'],
                 'parish_priest_assignment_unique'
             );
+
+            $table->foreign('parish_id')
+                ->references('id')
+                ->on('parishes')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreign('priest_id')
+                ->references('id')
+                ->on('priests')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreign('parish_role_id')
+                ->references('id')
+                ->on('parish_roles')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 

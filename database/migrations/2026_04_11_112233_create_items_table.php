@@ -25,6 +25,18 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['parish_id', 'community_id'], 'items_parish_community_index');
+
+            $table->foreign('parish_id')
+                ->references('id')
+                ->on('parishes')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreign('community_id')
+                ->references('id')
+                ->on('communities')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
         });
     }
 

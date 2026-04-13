@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('image_path')->nullable();
             $table->unsignedBigInteger('archpriest_id')->nullable()->index();
             $table->timestamps();
+
+            $table->foreign('archpriest_id')
+                ->references('id')
+                ->on('priests')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 

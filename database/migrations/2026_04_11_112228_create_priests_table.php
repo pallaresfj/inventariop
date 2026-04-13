@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('email', 120)->nullable()->index();
             $table->string('image_path')->nullable();
             $table->timestamps();
+
+            $table->foreign('priest_title_id')
+                ->references('id')
+                ->on('priest_titles')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 
