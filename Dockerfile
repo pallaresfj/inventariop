@@ -3,10 +3,11 @@ FROM php:8.4-fpm-alpine AS php_base
 WORKDIR /var/www/html
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ARG PHP_EXT_INSTALL_JOBS=2
 
 RUN apk add --no-cache bash curl git unzip icu-libs libzip oniguruma libxml2 \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev libxml2-dev linux-headers \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring bcmath intl zip exif pcntl opcache \
+    && docker-php-ext-install -j"${PHP_EXT_INSTALL_JOBS}" pdo_mysql mbstring bcmath intl zip exif pcntl opcache \
     && apk del .build-deps
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
