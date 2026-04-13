@@ -27,6 +27,10 @@ fi
 
 php artisan package:discover --ansi || true
 
+if [ "${APP_ENV:-production}" = "production" ] && [ "${APP_SKIP_FILAMENT_ASSETS:-0}" != "1" ]; then
+    php artisan filament:assets --no-interaction --ansi || true
+fi
+
 if [ "${APP_ENV:-production}" = "production" ] && [ "${APP_SKIP_MIGRATIONS:-0}" != "1" ]; then
     php artisan migrate --force --ansi
 fi
