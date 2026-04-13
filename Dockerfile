@@ -6,7 +6,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apk add --no-cache bash curl git unzip icu-libs libzip oniguruma libxml2 \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev oniguruma-dev libxml2-dev linux-headers \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring bcmath intl zip exif pcntl opcache dom xml xmlreader xmlwriter simplexml \
+    && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring bcmath intl zip exif pcntl opcache \
     && apk del .build-deps
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
