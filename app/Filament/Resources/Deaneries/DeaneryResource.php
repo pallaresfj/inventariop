@@ -23,7 +23,7 @@ class DeaneryResource extends Resource
 {
     protected static ?string $model = Deanery::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingLibrary;
 
     protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 

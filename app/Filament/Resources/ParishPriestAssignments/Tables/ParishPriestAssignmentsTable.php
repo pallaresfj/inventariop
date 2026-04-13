@@ -7,8 +7,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -27,41 +25,22 @@ class ParishPriestAssignmentsTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('priest.name')
-                            ->label('Sacerdote')
-                            ->placeholder('-'),
-                        TextColumn::make('parish.name')
-                            ->label('Parroquia')
-                            ->placeholder('-'),
-                        TextColumn::make('parishRole.description')
-                            ->label('Cargo parroquial')
-                            ->placeholder('-'),
-                        IconColumn::make('is_current')
-                            ->label('Vigente')
-                            ->boolean(),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('parish.name')
                     ->label('Parroquia')
                     ->sortable()
-                    ->searchable()
-                    ->visibleFrom('md'),
+                    ->searchable(),
                 TextColumn::make('priest.name')
                     ->label('Sacerdote')
                     ->sortable()
-                    ->searchable()
-                    ->visibleFrom('md'),
+                    ->searchable(),
                 TextColumn::make('parishRole.description')
                     ->label('Cargo parroquial')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 IconColumn::make('is_current')
                     ->label('Vigente')
-                    ->boolean()
-                    ->visibleFrom('md'),
+                    ->boolean(),
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')

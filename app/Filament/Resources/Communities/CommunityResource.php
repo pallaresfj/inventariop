@@ -23,7 +23,7 @@ class CommunityResource extends Resource
 {
     protected static ?string $model = Community::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 

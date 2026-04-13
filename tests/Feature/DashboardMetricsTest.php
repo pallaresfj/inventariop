@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Widgets\InventoryHighlights;
 use App\Filament\Widgets\InventoryOverview;
 use App\Models\Community;
 use App\Models\Deanery;
@@ -11,6 +12,7 @@ use App\Models\Priest;
 use App\Models\PriestTitle;
 use App\Models\Restoration;
 use App\Models\User;
+use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
@@ -24,6 +26,15 @@ it('loads the admin dashboard for all inventory roles', function (): void {
         $this->actingAs($context[$key])
             ->get('/admin')
             ->assertOk();
+    }
+});
+
+it('builds four highlight stats for all inventory roles', function (): void {
+    $context = buildDashboardFixture();
+    $widget = app(InventoryHighlights::class);
+
+    foreach (['technical', 'diocese', 'parish', 'community'] as $key) {
+        expect($widget->buildStatsFor($context[$key]))->toHaveCount(4);
     }
 });
 
@@ -85,6 +96,40 @@ it('builds dashboard metrics with correct scope and visibility per role', functi
         ->not->toHaveKey('Asignaciones vigentes')
         ->not->toHaveKey('Usuarios activos')
         ->not->toHaveKey('Roles definidos');
+});
+
+it('builds monthly trends using calendar-month boundaries', function (): void {
+    $context = buildDashboardFixture();
+
+    $previousMonthDate = now()->subMonthNoOverflow()->startOfMonth()->addDays(2)->toDateString();
+    $currentMonthDate = now()->startOfMonth()->addDays(5)->toDateString();
+
+    $restorations = Restoration::query()->orderBy('id')->get();
+    $restorations[0]->update([
+        'restored_at' => $previousMonthDate,
+        'restoration_cost' => 3500,
+    ]);
+    $restorations[1]->update([
+        'restored_at' => $currentMonthDate,
+        'restoration_cost' => 1000,
+    ]);
+
+    $widget = app(InventoryOverview::class);
+    $stats = collect($widget->buildStatsFor($context['technical']))
+        ->keyBy(fn (Stat $stat): string => (string) $stat->getLabel());
+
+    /** @var Stat $restorationsStat */
+    $restorationsStat = $stats->get('Restauraciones registradas');
+    /** @var Stat $costStat */
+    $costStat = $stats->get('Costo acumulado de restauracion');
+
+    expect($restorationsStat->getDescriptionIcon())->toBe(Heroicon::OutlinedMinus)
+        ->and(array_values($restorationsStat->getChart()))->toBe([1, 1])
+        ->and((string) $restorationsStat->getDescription())->toContain('mes anterior');
+
+    expect($costStat->getDescriptionIcon())->toBe(Heroicon::OutlinedArrowTrendingDown)
+        ->and((string) $costStat->getDescription())->toContain('mes anterior')
+        ->and(array_values($costStat->getChart())[0])->toBeGreaterThan(array_values($costStat->getChart())[1]);
 });
 
 /**

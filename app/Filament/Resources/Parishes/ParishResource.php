@@ -23,7 +23,7 @@ class ParishResource extends Resource
 {
     protected static ?string $model = Parish::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
     protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 

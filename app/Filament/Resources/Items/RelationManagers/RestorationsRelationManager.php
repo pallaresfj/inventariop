@@ -14,8 +14,6 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -63,30 +61,16 @@ class RestorationsRelationManager extends RelationManager
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('restored_at')
-                            ->label('Fecha de restauracion')
-                            ->date('Y-m-d'),
-                        TextColumn::make('restoration_cost')
-                            ->label('Costo de restauracion')
-                            ->money('COP', locale: 'es_CO'),
-                        TextColumn::make('updated_at')
-                            ->label('Actualizado')
-                            ->dateTime('Y-m-d H:i'),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('restored_at')
                     ->label('Fecha de restauracion')
                     ->date('Y-m-d')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('restoration_cost')
                     ->label('Costo de restauracion')
                     ->money('COP', locale: 'es_CO')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')

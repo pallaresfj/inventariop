@@ -9,8 +9,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -30,50 +28,22 @@ class ItemsTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('name')
-                            ->label('Nombre'),
-                        TextColumn::make('parish.name')
-                            ->label('Parroquia')
-                            ->placeholder('-'),
-                        TextColumn::make('community.name')
-                            ->label('Comunidad')
-                            ->placeholder('-'),
-                        TextColumn::make('price')
-                            ->label('Precio')
-                            ->money('COP', locale: 'es_CO'),
-                        TextColumn::make('acquired_at')
-                            ->label('Adquisicion')
-                            ->date('Y-m-d')
-                            ->placeholder('-'),
-                        TextColumn::make('condition')
-                            ->label('Estado')
-                            ->badge(),
-                        IconColumn::make('is_active')
-                            ->label('Activo')
-                            ->boolean(),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('parish.name')
                     ->label('Parroquia')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('community.name')
                     ->label('Comunidad')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('price')
                     ->label('Precio')
                     ->money('COP', locale: 'es_CO')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('acquired_at')
                     ->label('Adquisicion')
                     ->date('Y-m-d')
@@ -85,8 +55,7 @@ class ItemsTable
                     ->visibleFrom('md'),
                 IconColumn::make('is_active')
                     ->label('Activo')
-                    ->boolean()
-                    ->visibleFrom('md'),
+                    ->boolean(),
             ])
             ->filters([
                 SelectFilter::make('parish')

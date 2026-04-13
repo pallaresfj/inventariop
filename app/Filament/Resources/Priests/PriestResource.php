@@ -22,7 +22,7 @@ class PriestResource extends Resource
 {
     protected static ?string $model = Priest::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
 
     protected static string|UnitEnum|null $navigationGroup = 'Inventario';
 

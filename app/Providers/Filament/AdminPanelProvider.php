@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\EditProfile;
 use App\Filament\Auth\Login;
+use App\Filament\Widgets\InventoryHighlights;
 use App\Filament\Widgets\InventoryOverview;
 use App\Http\Middleware\ForcePasswordReset;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -55,11 +56,16 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                InventoryHighlights::class,
                 InventoryOverview::class,
             ])
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): View => view('filament.admin.mobile-actions'),
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): View => view('filament.admin.dashboard-styles'),
             )
             ->bootUsing(function (): void {
                 Action::configureUsing(function (Action $action): void {
@@ -99,6 +105,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Seguridad')
                     ->navigationLabel('Roles')
+                    ->navigationIcon('heroicon-o-shield-check')
                     ->navigationSort(20),
             ])
             ->authMiddleware([

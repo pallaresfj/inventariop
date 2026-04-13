@@ -7,8 +7,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -27,36 +25,15 @@ class ParishesTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('name')
-                            ->label('Nombre'),
-                        TextColumn::make('deanery.name')
-                            ->label('Arciprestazgo')
-                            ->placeholder('-'),
-                        TextColumn::make('phone')
-                            ->label('Telefono')
-                            ->placeholder('-'),
-                        TextColumn::make('email')
-                            ->label('Correo')
-                            ->placeholder('-')
-                            ->limit(30),
-                        TextColumn::make('legacy_login')
-                            ->label('Acceso legado')
-                            ->placeholder('-')
-                            ->limit(24),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('deanery.name')
                     ->label('Arciprestazgo')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('legacy_login')
                     ->label('Acceso legado')
                     ->searchable()
@@ -65,11 +42,9 @@ class ParishesTable
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()
-                    ->limit(40)
-                    ->visibleFrom('md'),
+                    ->limit(40),
                 TextColumn::make('phone')
-                    ->label('Telefono')
-                    ->visibleFrom('md'),
+                    ->label('Telefono'),
             ])
             ->filters([
                 SelectFilter::make('deanery')

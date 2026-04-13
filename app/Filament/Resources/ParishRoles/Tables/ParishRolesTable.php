@@ -6,8 +6,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -25,28 +23,17 @@ class ParishRolesTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('description')
-                            ->label('Descripcion')
-                            ->lineClamp(2),
-                        TextColumn::make('updated_at')
-                            ->label('Actualizado')
-                            ->dateTime('Y-m-d H:i'),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('description')
                     ->label('Descripcion')
                     ->searchable()
                     ->sortable()
-                    ->lineClamp(2)
-                    ->visibleFrom('md'),
+                    ->lineClamp(2),
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
             ])
             ->filters([])
             ->recordActions([

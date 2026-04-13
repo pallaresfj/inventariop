@@ -7,8 +7,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -26,34 +24,20 @@ class DeaneriesTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('name')
-                            ->label('Nombre'),
-                        TextColumn::make('archpriest.name')
-                            ->label('Arcipreste')
-                            ->placeholder('-'),
-                        TextColumn::make('email')
-                            ->label('Correo')
-                            ->placeholder('-')
-                            ->limit(32),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->visibleFrom('md'),
-                TextColumn::make('email')
-                    ->label('Correo')
-                    ->searchable()
-                    ->limit(40)
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('archpriest.name')
                     ->label('Arcipreste')
                     ->searchable()
-                    ->visibleFrom('md'),
+                    ->placeholder('-'),
+                TextColumn::make('email')
+                    ->label('Correo')
+                    ->searchable()
+                    ->limit(40),
                 TextColumn::make('updated_at')
                     ->label('Actualizado')
                     ->dateTime('Y-m-d H:i')

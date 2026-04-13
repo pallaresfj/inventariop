@@ -1,7 +1,10 @@
 <?php
 
-test('the application returns a successful response', function () {
+test('the home page explains the app and exposes login access', function (): void {
     $response = $this->get('/');
 
-    $response->assertStatus(200);
+    $response->assertOk()
+        ->assertSee('Control integral del inventario parroquial')
+        ->assertSee('Que puedes gestionar')
+        ->assertSee(route('filament.admin.auth.login', absolute: false));
 });

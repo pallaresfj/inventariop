@@ -5,11 +5,29 @@ namespace App\Filament\Auth;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Component;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Validation\ValidationException;
 use SensitiveParameter;
 
 class Login extends BaseLogin
 {
+    protected string $view = 'filament.auth.login';
+
+    public function hasLogo(): bool
+    {
+        return false;
+    }
+
+    public function getHeading(): string|Htmlable|null
+    {
+        return null;
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        return null;
+    }
+
     protected function getEmailFormComponent(): Component
     {
         return TextInput::make('login')

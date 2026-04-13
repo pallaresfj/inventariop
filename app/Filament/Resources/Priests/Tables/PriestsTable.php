@@ -6,8 +6,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -26,40 +24,21 @@ class PriestsTable
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('name')
-                            ->label('Nombre'),
-                        TextColumn::make('priestTitle.title')
-                            ->label('Titulo')
-                            ->placeholder('-'),
-                        TextColumn::make('phone')
-                            ->label('Telefono')
-                            ->placeholder('-'),
-                        TextColumn::make('email')
-                            ->label('Correo')
-                            ->placeholder('-')
-                            ->limit(32),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('priestTitle.title')
                     ->label('Titulo')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('phone')
-                    ->label('Telefono')
-                    ->visibleFrom('md'),
+                    ->label('Telefono'),
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()
-                    ->limit(40)
-                    ->visibleFrom('md'),
+                    ->limit(40),
             ])
             ->filters([
                 SelectFilter::make('priest_title_id')

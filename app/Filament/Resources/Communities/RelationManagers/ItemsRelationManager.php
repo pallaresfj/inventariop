@@ -19,8 +19,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -88,49 +86,26 @@ class ItemsRelationManager extends RelationManager
             ->filtersLayout(FiltersLayout::Modal)
             ->persistFiltersInSession()
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
+            ->stackedOnMobile()
             ->columns([
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('name')
-                            ->label('Nombre'),
-                        TextColumn::make('price')
-                            ->label('Precio')
-                            ->money('COP', locale: 'es_CO'),
-                        TextColumn::make('acquired_at')
-                            ->label('Adquisicion')
-                            ->date('Y-m-d')
-                            ->placeholder('-'),
-                        TextColumn::make('condition')
-                            ->label('Estado')
-                            ->badge(),
-                        IconColumn::make('is_active')
-                            ->label('Activo')
-                            ->boolean(),
-                    ])->space(1),
-                ])->hiddenFrom('md'),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('price')
                     ->label('Precio')
                     ->money('COP', locale: 'es_CO')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('acquired_at')
                     ->label('Adquisicion')
                     ->date('Y-m-d')
-                    ->sortable()
-                    ->visibleFrom('md'),
+                    ->sortable(),
                 TextColumn::make('condition')
                     ->label('Estado')
-                    ->badge()
-                    ->visibleFrom('md'),
+                    ->badge(),
                 IconColumn::make('is_active')
                     ->label('Activo')
-                    ->boolean()
-                    ->visibleFrom('md'),
+                    ->boolean(),
             ])
             ->headerActions([
                 CreateAction::make()
