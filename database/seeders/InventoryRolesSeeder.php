@@ -36,11 +36,11 @@ class InventoryRolesSeeder extends Seeder
         $this->syncRolePermissions();
 
         $supportUser = User::updateOrCreate(
-            ['username' => 'support'],
+            ['username' => 'soporte'],
             [
-                'name' => 'Technical Support',
-                'email' => 'support@inventariop.local',
-                'password' => Hash::make('ChangeMe123!'),
+                'name' => 'Soporte Técnico',
+                'email' => 'pallaresfj@asyservicios.com',
+                'password' => Hash::make('Cambiar123!'),
                 'is_active' => true,
                 'force_password_reset' => true,
                 'legacy_password_md5' => null,
