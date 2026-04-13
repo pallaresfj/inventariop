@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine AS php_base
+FROM php:8.4-fpm-alpine AS php_base
 
 WORKDIR /var/www/html
 
@@ -65,7 +65,7 @@ RUN chmod +x /usr/local/bin/entrypoint \
     && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/testing storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 8080
+EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
