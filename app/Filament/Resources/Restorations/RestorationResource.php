@@ -2,9 +2,6 @@
 
 namespace App\Filament\Resources\Restorations;
 
-use App\Filament\Resources\Restorations\Pages\CreateRestoration;
-use App\Filament\Resources\Restorations\Pages\EditRestoration;
-use App\Filament\Resources\Restorations\Pages\ListRestorations;
 use App\Filament\Resources\Restorations\Schemas\RestorationForm;
 use App\Filament\Resources\Restorations\Tables\RestorationsTable;
 use App\Models\Restoration;
@@ -65,10 +62,6 @@ class RestorationResource extends Resource
 
     public static function getPages(): array
     {
-        return [
-            'index' => ListRestorations::route('/'),
-            'create' => CreateRestoration::route('/create'),
-            'edit' => EditRestoration::route('/{record}/edit'),
-        ];
+        return [];
     }
 }
