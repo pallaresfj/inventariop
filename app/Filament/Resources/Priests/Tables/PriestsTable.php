@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Priests\Tables;
 
+use App\Models\Priest;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -30,6 +31,8 @@ class PriestsTable
                 ImageColumn::make('image_path')
                     ->label('Foto')
                     ->disk('public')
+                    ->state(fn (Priest $record): ?string => self::normalizeImagePath($record->image_path))
+                    ->checkFileExistence(false)
                     ->imageSize(40)
                     ->circular(),
                 TextColumn::make('name')
@@ -60,5 +63,27 @@ class PriestsTable
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    private static function normalizeImagePath(?string $imagePath): ?string
+    {
+        if (blank($imagePath)) {
+            return null;
+        }
+
+        $normalizedPath = str_replace('\\', '/', trim($imagePath));
+
+        if (filter_var($normalizedPath, FILTER_VALIDATE_URL)) {
+            return $normalizedPath;
+        }
+
+        foreach (['storage/app/public/', 'public/storage/', 'storage/'] as $prefix) {
+            if (str_starts_with($normalizedPath, $prefix)) {
+                $normalizedPath = substr($normalizedPath, strlen($prefix));
+                break;
+            }
+        }
+
+        return ltrim($normalizedPath, '/');
     }
 }
