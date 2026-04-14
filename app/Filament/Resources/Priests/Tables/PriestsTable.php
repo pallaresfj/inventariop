@@ -13,6 +13,8 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PriestsTable
 {
@@ -31,8 +33,7 @@ class PriestsTable
                 ImageColumn::make('image_path')
                     ->label('Foto')
                     ->disk('public')
-                    ->state(fn (Priest $record): ?string => self::normalizeImagePath($record->image_path))
-                    ->checkFileExistence(false)
+                    ->state(fn (Priest $record): ?string => self::resolveImageUrl($record->image_path))
                     ->imageSize(40)
                     ->circular(),
                 TextColumn::make('name')
@@ -65,16 +66,27 @@ class PriestsTable
             ]);
     }
 
-    private static function normalizeImagePath(?string $imagePath): ?string
+    private static function resolveImageUrl(?string $imagePath): ?string
     {
         if (blank($imagePath)) {
             return null;
         }
 
         $normalizedPath = str_replace('\\', '/', trim($imagePath));
+        $normalizedPath = preg_replace('/\0+$/', '', $normalizedPath) ?: $normalizedPath;
 
         if (filter_var($normalizedPath, FILTER_VALIDATE_URL)) {
-            return $normalizedPath;
+            $urlPath = parse_url($normalizedPath, PHP_URL_PATH);
+
+            if (is_string($urlPath) && str_contains($urlPath, '/storage/')) {
+                $normalizedPath = Str::after($urlPath, '/storage/');
+            } else {
+                return $normalizedPath;
+            }
+        }
+
+        if (str_contains($normalizedPath, '/storage/app/public/')) {
+            $normalizedPath = Str::after($normalizedPath, '/storage/app/public/');
         }
 
         foreach (['storage/app/public/', 'public/storage/', 'storage/'] as $prefix) {
@@ -84,6 +96,20 @@ class PriestsTable
             }
         }
 
-        return ltrim($normalizedPath, '/');
+        $normalizedPath = ltrim($normalizedPath, '/');
+
+        $candidatePaths = array_values(array_unique([
+            $normalizedPath,
+            str_replace('inventario-legacy/sacerdotes/', 'inventory-legacy/priests/', $normalizedPath),
+            str_replace('inventory-legacy/priests/', 'inventario-legacy/sacerdotes/', $normalizedPath),
+        ]));
+
+        foreach ($candidatePaths as $candidatePath) {
+            if ($candidatePath !== '' && Storage::disk('public')->exists($candidatePath)) {
+                return Storage::disk('public')->url($candidatePath);
+            }
+        }
+
+        return null;
     }
 }
