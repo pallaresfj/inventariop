@@ -34,11 +34,6 @@ class ParishesTable
                 TextColumn::make('deanery.name')
                     ->label('Arciprestazgo')
                     ->sortable(),
-                TextColumn::make('legacy_login')
-                    ->label('Acceso legado')
-                    ->searchable()
-                    ->limit(30)
-                    ->visibleFrom('md'),
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()

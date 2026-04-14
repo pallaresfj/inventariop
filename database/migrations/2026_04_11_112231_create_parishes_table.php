@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('deanery_id')->index();
             $table->string('name', 80);
-            $table->string('legacy_login')->nullable()->unique();
             $table->string('email', 120)->nullable();
             $table->text('description')->nullable();
             $table->string('address', 120)->nullable();

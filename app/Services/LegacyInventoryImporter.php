@@ -398,7 +398,6 @@ class LegacyInventoryImporter
                 [
                     'deanery_id' => (int) $legacy->Arciprestazgo,
                     'name' => trim((string) $legacy->NombreParroquia),
-                    'legacy_login' => $this->nullableString($legacy->login),
                     'email' => $this->nullableString($legacy->CorreoParroquia),
                     'description' => $this->nullableString($legacy->DescripcionParroquia),
                     'address' => $this->nullableString($legacy->DireccionParroquia),
@@ -597,15 +596,6 @@ class LegacyInventoryImporter
             'parish_id' => null,
             'community_id' => null,
         ];
-
-        if ($user->isParishManager()) {
-            $parish = Parish::query()->where('legacy_login', $user->username)->first();
-
-            if ($parish) {
-                $context['parish_id'] = $parish->id;
-                $context['deanery_id'] = $parish->deanery_id;
-            }
-        }
 
         if ($user->isCommunityManager()) {
             $community = Community::query()

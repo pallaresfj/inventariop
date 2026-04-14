@@ -37,9 +37,6 @@ class ParishesRelationManager extends RelationManager
                     ->label('Nombre')
                     ->required()
                     ->maxLength(80),
-                TextInput::make('legacy_login')
-                    ->label('Acceso legado')
-                    ->maxLength(255),
                 TextInput::make('email')
                     ->label('Correo')
                     ->email()
@@ -84,10 +81,6 @@ class ParishesRelationManager extends RelationManager
                     ->label('Nombre')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('legacy_login')
-                    ->label('Acceso legado')
-                    ->searchable()
-                    ->visibleFrom('md'),
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable(),

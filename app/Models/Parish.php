@@ -12,7 +12,6 @@ class Parish extends Model
     protected $fillable = [
         'deanery_id',
         'name',
-        'legacy_login',
         'email',
         'description',
         'address',

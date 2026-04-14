@@ -35,9 +35,6 @@ class ParishForm
                             ->columns(2),
                         Tab::make('Contacto')
                             ->schema([
-                                TextInput::make('legacy_login')
-                                    ->label('Acceso legado')
-                                    ->maxLength(255),
                                 TextInput::make('email')
                                     ->label('Correo')
                                     ->email()
