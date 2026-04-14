@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Filament\Resources\Users\Support\UserLocationScope;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Role;
 
 class UserForm
@@ -46,16 +50,45 @@ class UserForm
                 Select::make('deanery_id')
                     ->label('Arciprestazgo')
                     ->relationship('deanery', 'name')
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, mixed $state, mixed $old): void {
+                        if (! UserLocationScope::shouldResetParishAndCommunity($state, $old)) {
+                            return;
+                        }
+
+                        $set('parish_id', null);
+                        $set('community_id', null);
+                    })
                     ->searchable()
                     ->preload(),
                 Select::make('parish_id')
                     ->label('Parroquia')
-                    ->relationship('parish', 'name')
+                    ->relationship(
+                        'parish',
+                        'name',
+                        fn (Builder $query, Get $get): Builder => UserLocationScope::scopeParishOptionsQuery(
+                            $query,
+                            UserLocationScope::resolveSelectedDeaneryId($get('deanery_id'))
+                        ),
+                    )
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, mixed $state, mixed $old): void {
+                        if (UserLocationScope::shouldResetCommunity($state, $old)) {
+                            $set('community_id', null);
+                        }
+                    })
                     ->searchable()
                     ->preload(),
                 Select::make('community_id')
                     ->label('Comunidad')
-                    ->relationship('community', 'name')
+                    ->relationship(
+                        'community',
+                        'name',
+                        fn (Builder $query, Get $get): Builder => UserLocationScope::scopeCommunityOptionsQuery(
+                            $query,
+                            UserLocationScope::resolveSelectedParishId($get('parish_id'))
+                        ),
+                    )
                     ->searchable()
                     ->preload(),
                 Toggle::make('is_active')
