@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Communities\RelationManagers;
 
 use App\Models\Community;
+use App\Models\Item;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -19,10 +21,13 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -88,6 +93,21 @@ class ItemsRelationManager extends RelationManager
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
             ->stackedOnMobile()
             ->columns([
+                ImageColumn::make('image_path')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->imageSize(44)
+                    ->action(
+                        Action::make('previewItemImageFromCommunity')
+                            ->label('Ver imagen')
+                            ->modalHeading('Imagen del articulo')
+                            ->modalSubmitAction(false)
+                            ->modalContent(fn (Item $record): View => view('filament.modals.image-preview', [
+                                'imageUrl' => filled($record->image_path) ? Storage::disk('public')->url($record->image_path) : null,
+                                'alt' => $record->name,
+                            ])),
+                    )
+                    ->disabledClick(fn (?string $state): bool => blank($state)),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()

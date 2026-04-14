@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Items\Tables;
 
+use App\Models\Item;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -9,12 +11,15 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ItemsTable
 {
@@ -30,6 +35,21 @@ class ItemsTable
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
             ->stackedOnMobile()
             ->columns([
+                ImageColumn::make('image_path')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->imageSize(44)
+                    ->action(
+                        Action::make('previewItemImage')
+                            ->label('Ver imagen')
+                            ->modalHeading('Imagen del articulo')
+                            ->modalSubmitAction(false)
+                            ->modalContent(fn (Item $record): View => view('filament.modals.image-preview', [
+                                'imageUrl' => filled($record->image_path) ? Storage::disk('public')->url($record->image_path) : null,
+                                'alt' => $record->name,
+                            ])),
+                    )
+                    ->disabledClick(fn (?string $state): bool => blank($state)),
                 TextColumn::make('parish.name')
                     ->label('Parroquia')
                     ->sortable(),

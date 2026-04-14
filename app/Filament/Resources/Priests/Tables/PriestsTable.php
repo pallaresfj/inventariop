@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
@@ -26,6 +27,11 @@ class PriestsTable
             ->recordActionsPosition(RecordActionsPosition::AfterContent)
             ->stackedOnMobile()
             ->columns([
+                ImageColumn::make('image_path')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->imageSize(40)
+                    ->circular(),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
