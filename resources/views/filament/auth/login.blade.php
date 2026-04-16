@@ -159,6 +159,122 @@
             font-weight: 600;
         }
 
+        .dark .inv-login {
+            --inv-primary: #7f99d4;
+            --inv-success: #63b175;
+            --inv-info: #d7e4ff;
+            --inv-warning: #d7bd6b;
+            --inv-danger: #e27d7d;
+            --inv-line: #2d3a55;
+            --inv-muted: #a8b5d0;
+            --inv-paper: #0f1728;
+        }
+
+        .dark .inv-login-main,
+        .dark .inv-login-side {
+            border-color: var(--inv-line);
+            box-shadow: 0 24px 42px -30px rgba(0, 0, 0, 0.9);
+        }
+
+        .dark .inv-login-main {
+            background: linear-gradient(165deg, #0f1729 0%, #111d34 100%);
+        }
+
+        .dark .inv-login-form {
+            border-color: color-mix(in srgb, var(--inv-primary) 24%, var(--inv-line));
+            background: #0b1426;
+        }
+
+        .dark .inv-login-home-link {
+            border-color: color-mix(in srgb, var(--inv-warning) 55%, var(--inv-line));
+            background: color-mix(in srgb, #0f1729 72%, var(--inv-warning));
+            color: var(--inv-info);
+        }
+
+        .dark .inv-login-home-link:hover {
+            box-shadow: 0 14px 24px -18px rgba(0, 0, 0, 0.75);
+        }
+
+        .dark .inv-login-side {
+            background:
+                radial-gradient(130% 95% at 100% 0%, color-mix(in srgb, var(--inv-warning) 18%, #0f1729), transparent 60%),
+                radial-gradient(120% 90% at 0% 100%, color-mix(in srgb, var(--inv-primary) 22%, #0f1729), transparent 58%),
+                #0f1729;
+        }
+
+        .dark .inv-login-pill {
+            border-color: color-mix(in srgb, var(--inv-primary) 24%, var(--inv-line));
+            background: color-mix(in srgb, #0f1729 72%, var(--inv-primary));
+        }
+
+        .dark .inv-login-role {
+            border-color: color-mix(in srgb, var(--inv-success) 35%, var(--inv-line));
+            background: color-mix(in srgb, #0f1729 76%, var(--inv-success));
+            color: #dce9ff;
+        }
+
+        .dark .inv-login-form .fi-fo-field-label,
+        .dark .inv-login-form .fi-input-wrp-label {
+            color: #c8d5ef;
+        }
+
+        .dark .inv-login-form .fi-fo-field-helper-text,
+        .dark .inv-login-form .fi-fo-field-wrp-hint {
+            color: #97a9cb;
+        }
+
+        .dark .inv-login-form .fi-fo-field-wrp-error-message,
+        .dark .inv-login-form .fi-fo-field-wrp-error-list {
+            color: #f6b9b9;
+        }
+
+        .dark .inv-login-form .fi-input-wrp {
+            border-color: color-mix(in srgb, var(--inv-primary) 30%, var(--inv-line));
+            background: color-mix(in srgb, #0f1729 90%, #1a2742);
+        }
+
+        .dark .inv-login-form .fi-input-wrp:focus-within {
+            border-color: color-mix(in srgb, var(--inv-primary) 70%, #acc0ea);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--inv-primary) 55%, #acc0ea);
+        }
+
+        .dark .inv-login-form .fi-input {
+            color: #edf3ff;
+        }
+
+        .dark .inv-login-form .fi-input::placeholder {
+            color: #8ea1c5;
+        }
+
+        .dark .inv-login-form .fi-input-wrp-prefix,
+        .dark .inv-login-form .fi-input-wrp-suffix,
+        .dark .inv-login-form .fi-input-wrp-actions .fi-icon {
+            color: #9cb0d4;
+        }
+
+        .dark .inv-login-form .fi-checkbox-input {
+            border-color: color-mix(in srgb, var(--inv-primary) 44%, var(--inv-line));
+            background-color: #0f1729;
+            accent-color: var(--inv-primary);
+        }
+
+        .dark .inv-login-form .fi-checkbox-input:checked {
+            border-color: var(--inv-primary);
+            background-color: var(--inv-primary);
+        }
+
+        .dark .inv-login-form a,
+        .dark .inv-login-form .fi-link {
+            color: #9eb7ea;
+        }
+
+        .dark .inv-login-form .fi-btn {
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--inv-primary), color-mix(in srgb, var(--inv-primary) 72%, #86a6ea));
+            color: #f7fbff;
+            box-shadow: 0 14px 26px -18px rgba(0, 0, 0, 0.8);
+        }
+
         @media (max-width: 900px) {
             .inv-login {
                 grid-template-columns: 1fr;

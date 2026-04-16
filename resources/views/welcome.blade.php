@@ -11,6 +11,7 @@
 
         <style>
             :root {
+                color-scheme: light dark;
                 --primary: #2e4a7d;
                 --success: #2e7d32;
                 --info: #1f2a44;
@@ -21,6 +22,10 @@
                 --line: #d8dee8;
                 --paper: #f5f7fb;
                 --white: #ffffff;
+                --hero-list-ink: #26334f;
+                --footer-ink: #6a7488;
+                --page-glow-primary: rgba(46, 74, 125, 0.15);
+                --page-glow-warning: rgba(201, 166, 70, 0.16);
             }
 
             * {
@@ -32,8 +37,8 @@
                 font-family: 'Instrument Sans', sans-serif;
                 color: var(--ink);
                 background:
-                    radial-gradient(80rem 40rem at 100% 0%, rgba(46, 74, 125, 0.15), transparent 60%),
-                    radial-gradient(60rem 30rem at 0% 35%, rgba(201, 166, 70, 0.16), transparent 60%),
+                    radial-gradient(80rem 40rem at 100% 0%, var(--page-glow-primary), transparent 60%),
+                    radial-gradient(60rem 30rem at 0% 35%, var(--page-glow-warning), transparent 60%),
                     var(--paper);
                 min-height: 100vh;
             }
@@ -204,7 +209,7 @@
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
-                color: #26334f;
+                color: var(--hero-list-ink);
                 font-size: 0.94rem;
             }
 
@@ -329,9 +334,45 @@
             .footer {
                 border-top: 1px solid var(--line);
                 padding: 0.9rem 0 1.5rem;
-                color: #6a7488;
+                color: var(--footer-ink);
                 font-size: 0.84rem;
                 text-align: center;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --primary: #7f99d4;
+                    --success: #63b175;
+                    --info: #d7e4ff;
+                    --warning: #d7bd6b;
+                    --danger: #e27d7d;
+                    --ink: #e4ecff;
+                    --muted: #a8b5d0;
+                    --line: #2c3954;
+                    --paper: #070b15;
+                    --white: #0f1729;
+                    --hero-list-ink: #c6d4f0;
+                    --footer-ink: #93a3c0;
+                    --page-glow-primary: rgba(87, 129, 206, 0.23);
+                    --page-glow-warning: rgba(215, 189, 107, 0.2);
+                }
+
+                .topbar {
+                    background: color-mix(in srgb, var(--paper) 80%, #0b1223);
+                    border-bottom-color: color-mix(in srgb, var(--line) 82%, transparent);
+                }
+
+                .hero-main,
+                .hero-side,
+                .card,
+                .role-item,
+                .cta {
+                    box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.86);
+                }
+
+                .btn-primary {
+                    box-shadow: 0 12px 24px -14px rgba(0, 0, 0, 0.7);
+                }
             }
 
             @media (max-width: 980px) {
