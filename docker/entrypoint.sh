@@ -35,6 +35,10 @@ if [ "${APP_ENV:-production}" = "production" ] && [ "${APP_SKIP_MIGRATIONS:-0}" 
     php artisan migrate --force --ansi
 fi
 
+if [ "${APP_ENV:-production}" = "production" ] && [ "${APP_SKIP_STORAGE_LINK:-0}" != "1" ]; then
+    php artisan storage:link --force --no-interaction --ansi || true
+fi
+
 if [ "${APP_ENV:-production}" = "production" ] && [ "${APP_SKIP_WARMUP:-0}" != "1" ]; then
     php artisan config:cache --ansi || true
     php artisan route:cache --ansi || true

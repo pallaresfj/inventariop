@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Items\Tables;
 
+use App\Filament\Support\PublicImagePathResolver;
 use App\Models\Item;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -19,7 +20,6 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Storage;
 
 class ItemsTable
 {
@@ -38,6 +38,7 @@ class ItemsTable
                 ImageColumn::make('image_path')
                     ->label('Foto')
                     ->disk('public')
+                    ->state(fn (Item $record): ?string => PublicImagePathResolver::resolveExistingState($record->image_path))
                     ->imageSize(44)
                     ->action(
                         Action::make('previewItemImage')
@@ -45,7 +46,7 @@ class ItemsTable
                             ->modalHeading('Imagen del articulo')
                             ->modalSubmitAction(false)
                             ->modalContent(fn (Item $record): View => view('filament.modals.image-preview', [
-                                'imageUrl' => filled($record->image_path) ? Storage::disk('public')->url($record->image_path) : null,
+                                'imageUrl' => PublicImagePathResolver::resolveExistingUrl($record->image_path),
                                 'alt' => $record->name,
                             ])),
                     )

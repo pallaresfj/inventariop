@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Communities\RelationManagers;
 
+use App\Filament\Support\PublicImagePathResolver;
 use App\Models\Community;
 use App\Models\Item;
 use Filament\Actions\Action;
@@ -27,7 +28,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Storage;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -96,6 +96,7 @@ class ItemsRelationManager extends RelationManager
                 ImageColumn::make('image_path')
                     ->label('Foto')
                     ->disk('public')
+                    ->state(fn (Item $record): ?string => PublicImagePathResolver::resolveExistingState($record->image_path))
                     ->imageSize(44)
                     ->action(
                         Action::make('previewItemImageFromCommunity')
@@ -103,7 +104,7 @@ class ItemsRelationManager extends RelationManager
                             ->modalHeading('Imagen del articulo')
                             ->modalSubmitAction(false)
                             ->modalContent(fn (Item $record): View => view('filament.modals.image-preview', [
-                                'imageUrl' => filled($record->image_path) ? Storage::disk('public')->url($record->image_path) : null,
+                                'imageUrl' => PublicImagePathResolver::resolveExistingUrl($record->image_path),
                                 'alt' => $record->name,
                             ])),
                     )
