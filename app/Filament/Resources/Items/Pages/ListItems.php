@@ -23,6 +23,15 @@ class ListItems extends ListRecords
 {
     protected static string $resource = ItemResource::class;
 
+    private static function canUseBulkImportActions(): bool
+    {
+        $user = auth()->user();
+
+        return $user instanceof User
+            && $user->isTechnicalSupport()
+            && ItemResource::canCreate();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -30,8 +39,10 @@ class ListItems extends ListRecords
             Action::make('downloadCommunityCatalogXlsx')
                 ->label('Descargar catalogo de comunidades')
                 ->icon('heroicon-o-document-arrow-down')
-                ->visible(fn (): bool => ItemResource::canCreate())
+                ->visible(fn (): bool => self::canUseBulkImportActions())
                 ->action(function (): BinaryFileResponse {
+                    abort_unless(self::canUseBulkImportActions(), 403);
+
                     $user = auth()->user();
 
                     abort_unless($user instanceof User, 403);
@@ -41,12 +52,16 @@ class ListItems extends ListRecords
             Action::make('downloadItemsXlsxTemplate')
                 ->label('Descargar plantilla XLSX')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->visible(fn (): bool => ItemResource::canCreate())
-                ->action(fn (): BinaryFileResponse => app(ItemXlsxImportService::class)->createTemplateDownloadResponse()),
+                ->visible(fn (): bool => self::canUseBulkImportActions())
+                ->action(function (): BinaryFileResponse {
+                    abort_unless(self::canUseBulkImportActions(), 403);
+
+                    return app(ItemXlsxImportService::class)->createTemplateDownloadResponse();
+                }),
             Action::make('importItemsFromXlsx')
                 ->label('Importar articulos')
                 ->icon('heroicon-o-arrow-up-tray')
-                ->visible(fn (): bool => ItemResource::canCreate())
+                ->visible(fn (): bool => self::canUseBulkImportActions())
                 ->modalHeading('Importar articulos desde XLSX')
                 ->modalDescription('Usa la accion "Descargar catalogo de comunidades" para consultar el community_id permitido.')
                 ->modalSubmitActionLabel('Importar')
@@ -61,6 +76,15 @@ class ListItems extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data): void {
+                    if (! self::canUseBulkImportActions()) {
+                        Notification::make()
+                            ->title('No tienes permisos para usar la carga masiva de articulos.')
+                            ->danger()
+                            ->send();
+
+                        return;
+                    }
+
                     $user = auth()->user();
 
                     if (! $user instanceof User) {

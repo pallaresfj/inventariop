@@ -11,7 +11,7 @@ it('shows xlsx import actions on items index for users that can create items', f
     $user = createItemPageUser([
         'ViewAny:Item',
         'Create:Item',
-    ]);
+    ], role: 'technical_support');
 
     $this->actingAs($user)
         ->get('/admin/items')
@@ -24,7 +24,21 @@ it('shows xlsx import actions on items index for users that can create items', f
 it('hides xlsx import actions on items index for users without create permission', function (): void {
     $user = createItemPageUser([
         'ViewAny:Item',
-    ]);
+    ], role: 'technical_support');
+
+    $this->actingAs($user)
+        ->get('/admin/items')
+        ->assertOk()
+        ->assertDontSee('Descargar catalogo de comunidades')
+        ->assertDontSee('Descargar plantilla XLSX')
+        ->assertDontSee('Importar articulos');
+});
+
+it('hides xlsx import actions for non technical support roles even with create permission', function (): void {
+    $user = createItemPageUser([
+        'ViewAny:Item',
+        'Create:Item',
+    ], role: 'diocese_manager');
 
     $this->actingAs($user)
         ->get('/admin/items')
@@ -37,15 +51,15 @@ it('hides xlsx import actions on items index for users without create permission
 /**
  * @param  list<string>  $permissions
  */
-function createItemPageUser(array $permissions): User
+function createItemPageUser(array $permissions, string $role): User
 {
     $user = User::factory()->create([
         'force_password_reset' => false,
         'is_active' => true,
     ]);
 
-    $technicalSupportRole = Role::findOrCreate('technical_support', 'web');
-    $user->assignRole($technicalSupportRole);
+    $assignedRole = Role::findOrCreate($role, 'web');
+    $user->assignRole($assignedRole);
 
     foreach ($permissions as $permissionName) {
         Permission::findOrCreate($permissionName, 'web');
